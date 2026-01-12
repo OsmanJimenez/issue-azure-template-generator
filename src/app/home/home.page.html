@@ -1,20 +1,217 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+<ion-header class="ion-no-border">
+  <ion-toolbar color="surface">
+    <ion-title class="md3-title">Issue Generator</ion-title>
+
+    <!-- MD3 Tabs -->
+    <ion-segment [(ngModel)]="currentView" mode="md" class="md3-tabs">
+      <ion-segment-button value="issues">
+        <ion-label>Issues</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="tags">
+        <ion-label>Etiquetas</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="features">
+        <ion-label>Features</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="templates">
+        <ion-label>Templates</ion-label>
+      </ion-segment-button>
+    </ion-segment>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding main-bg">
+  <div class="content-wrapper">
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <!-- VIEW: ISSUES -->
+    <div *ngIf="currentView === 'issues'" class="fade-in">
+
+      <!-- List Mode -->
+      <div *ngIf="showIssuesList">
+        <div class="fab-container">
+          <ion-fab-button (click)="newIssue()" class="md3-fab">
+            <ion-icon name="add"></ion-icon>
+          </ion-fab-button>
+          <span class="fab-label">Create Issue</span>
+        </div>
+
+        <div class="issues-list">
+          <!-- Filters -->
+          <div *ngIf="issues.length === 0" class="empty-state-card">
+            <h3>No hay issues</h3>
+            <p>Usa el botón + para crear tu primera historia.</p>
+          </div>
+
+          <ion-card *ngFor="let issue of filteredIssues" class="md3-card-elevated">
+            <ion-card-content>
+              <div class="card-header">
+                <span class="id-badge">v{{issue.version}}</span>
+                <h2 class="headline">{{ issue.userStory }}</h2>
+                <ion-icon name="create-outline" class="edit-icon" (click)="editIssue(issue)"></ion-icon>
+              </div>
+
+              <div class="chips-area" *ngIf="issue.features?.length || issue.tags.length">
+                <span *ngFor="let fid of issue.features" class="custom-badge"
+                  [style.background]="getFeatureById(fid)?.color">
+                  {{ getFeatureById(fid)?.name }}
+                </span>
+                <span *ngFor="let tid of issue.tags" class="custom-badge tag"
+                  [style.background]="getTagById(tid)?.color">
+                  {{ getTagById(tid)?.name }}
+                </span>
+              </div>
+
+              <p class="supporting-text">{{ issue.description || 'Sin descripción' }}</p>
+
+              <div class="card-actions">
+                <span class="date">{{ issue.createdAt | date:'shortDate' }}</span>
+                <ion-button fill="clear" color="danger" (click)="deleteIssue(issue.id)">Eliminar</ion-button>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </div>
+      </div>
+
+      <!-- Creator Mode -->
+      <div *ngIf="!showIssuesList" class="fade-in">
+        <div class="form-header">
+          <ion-button fill="clear" (click)="backToList()">
+            <ion-icon name="arrow-back" slot="start"></ion-icon>
+            Volver
+          </ion-button>
+          <h2>{{ editingIssue ? 'Editar Issue' : 'Nuevo Issue' }}</h2>
+        </div>
+
+        <div class="md3-form-container">
+
+          <ion-accordion-group [value]="['metadata', 'template']" multiple="true" class="md3-accordion">
+
+            <!-- SECTION 1: METADATA & INFO -->
+            <ion-accordion value="metadata">
+              <ion-item slot="header" color="surface">
+                <ion-label>Información del Issue</ion-label>
+              </ion-item>
+
+              <div class="ion-padding" slot="content">
+
+                <!-- Template Selector -->
+                <div class="input-field">
+                  <ion-label color="primary"><b>1. Selecciona el Template</b></ion-label>
+                  <ion-select [(ngModel)]="selectedTemplateId" (ionChange)="onTemplateSelectChange()" fill="outline"
+                    placeholder="Elige qué vas a crear...">
+                    <ion-select-option value="legacy">Clásico (Azure Issue)</ion-select-option>
+                    <ion-select-option *ngFor="let t of templates" [value]="t.id">{{ t.name }}</ion-select-option>
+                  </ion-select>
+                </div>
+
+                <!-- EMPTY STATE -->
+                <div *ngIf="!selectedTemplateId" class="empty-state-message ion-text-center ion-padding">
+                  <ion-icon name="albums" size="large" color="medium"></ion-icon>
+                  <p class="ion-text-medium">Por favor selecciona un tipo de issue para comenzar.</p>
+                </div>
+
+                <!-- FORM CONTENT (Only visible if template selected) -->
+                <div *ngIf="selectedTemplateId" class="fade-in">
+
+                  <!-- LEGACY FORM -->
+                  <div *ngIf="selectedTemplateId === 'legacy'">
+                    <div class="input-field">
+                      <ion-label>User Story</ion-label>
+                      <ion-input [(ngModel)]="userStory" placeholder="Título" fill="outline"></ion-input>
+                    </div>
+
+                    <div class="row">
+                      <div class="input-field half">
+                        <ion-label>Año</ion-label>
+                        <ion-input [(ngModel)]="year" fill="outline"></ion-input>
+                      </div>
+                      <div class="input-field half">
+                        <ion-label>SP</ion-label>
+                        <ion-input [(ngModel)]="sp" fill="outline"></ion-input>
+                      </div>
+                    </div>
+
+                    <div class="input-field">
+                      <ion-label>Descripción</ion-label>
+                      <ion-textarea [(ngModel)]="description" rows="3" fill="outline"></ion-textarea>
+                    </div>
+                  </div>
+
+                  <!-- DYNAMIC FORM -->
+                  <div *ngIf="selectedTemplateId !== 'legacy' && currentTemplateConfig">
+                    <app-dynamic-form [template]="currentTemplateConfig" (dataChange)="onDynamicDataChange($event)">
+                    </app-dynamic-form>
+                  </div>
+
+                  <!-- Common Metadata (Features & Tags) -->
+                  <div class="input-field ion-margin-top">
+                    <ion-label>Features Relacionadas</ion-label>
+                    <ion-select multiple="true" [(ngModel)]="selectedFeatures" placeholder="Seleccionar" fill="outline">
+                      <ion-select-option *ngFor="let f of availableFeatures"
+                        [value]="f.id">{{f.name}}</ion-select-option>
+                    </ion-select>
+                  </div>
+
+                  <div class="input-field">
+                    <ion-label>Etiquetas</ion-label>
+                    <ion-select multiple="true" [(ngModel)]="selectedTags" placeholder="Seleccionar" fill="outline">
+                      <ion-select-option *ngFor="let t of availableTags" [value]="t.id">{{t.name}}</ion-select-option>
+                    </ion-select>
+                  </div>
+
+                  <ion-button expand="block" class="primary-btn ion-margin-top" (click)="generateTemplate()">
+                    {{ generatedTemplate ? 'Regenerar Template' : 'Generar Template' }}
+                  </ion-button>
+                </div>
+              </div>
+            </ion-accordion>
+
+            <!-- SECTION 2: TEMPLATE RESULT -->
+            <ion-accordion value="template" [disabled]="!generatedTemplate">
+              <ion-item slot="header" color="surface">
+                <ion-label>Template Generado</ion-label>
+              </ion-item>
+              <div class="ion-padding output-area" slot="content">
+                <pre>{{ generatedTemplate }}</pre>
+                <div class="output-actions">
+                  <ion-button fill="outline" (click)="copyToClipboard()">
+                    <ion-icon name="copy-outline" slot="start"></ion-icon>
+                    Copiar Texto
+                  </ion-button>
+                </div>
+              </div>
+            </ion-accordion>
+          </ion-accordion-group>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW: TAGS -->
+    <div *ngIf="currentView === 'tags'" class="fade-in">
+      <app-tag-manager></app-tag-manager>
+    </div>
+
+    <!-- VIEW: FEATURES -->
+    <div *ngIf="currentView === 'features'" class="fade-in">
+      <app-feature-manager></app-feature-manager>
+    </div>
+
+    <!-- VIEW: TEMPLATES -->
+    <div *ngIf="currentView === 'templates'" class="fade-in">
+      <app-template-manager></app-template-manager>
+    </div>
+
   </div>
 </ion-content>
+
+<!-- Sticky Footer for Primary Action -->
+<ion-footer *ngIf="currentView === 'issues' && !showIssuesList" class="md3-footer">
+  <ion-toolbar color="surface">
+    <div class="footer-actions">
+      <ion-button expand="block" (click)="saveIssue()" [disabled]="!generatedTemplate" class="save-btn">
+        <ion-icon name="save" slot="start"></ion-icon>
+        Guardar Issue
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

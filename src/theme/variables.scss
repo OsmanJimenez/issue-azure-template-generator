@@ -1,2 +1,106 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
+/* Material Design 3 Theme - Light Scheme (Default) */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+:root {
+  /* Core Colors */
+  --md-ref-palette-primary40: #6750a4;
+  --md-ref-palette-primary90: #eaddff;
+  --md-ref-palette-primary95: #f3edff;
+
+  --md-ref-palette-secondary40: #625b71;
+  --md-ref-palette-secondary90: #e8def8;
+
+  --md-ref-palette-tertiary40: #7d5260;
+  --md-ref-palette-tertiary90: #ffd8e4;
+
+  --md-ref-palette-error40: #b3261e;
+  --md-ref-palette-error90: #f9dedc;
+
+  --md-ref-palette-neutral10: #1c1b1f;
+  --md-ref-palette-neutral90: #e6e1e5;
+  --md-ref-palette-neutral95: #f4eff4;
+  --md-ref-palette-neutral99: #fffbfe;
+
+  /* Ionic Overrides Mapped to MD3 */
+  --ion-font-family: 'Roboto', sans-serif;
+
+  /** Primary */
+  --ion-color-primary: var(--md-ref-palette-primary40);
+  --ion-color-primary-rgb: 103, 80, 164;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #5a4690;
+  --ion-color-primary-tint: #7661ad;
+
+  /** Secondary */
+  --ion-color-secondary: var(--md-ref-palette-secondary40);
+  --ion-color-secondary-rgb: 98, 91, 113;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+
+  /** Tertiary */
+  --ion-color-tertiary: var(--md-ref-palette-tertiary40);
+  --ion-color-tertiary-rgb: 125, 82, 96;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+
+  /** MD3 Specific Tokens */
+  --md-sys-color-surface: var(--md-ref-palette-neutral99);
+  --md-sys-color-on-surface: var(--md-ref-palette-neutral10);
+  --md-sys-color-surface-container: var(--md-ref-palette-neutral95);
+
+  --md-sys-color-primary-container: var(--md-ref-palette-primary90);
+  --md-sys-color-on-primary-container: #21005d;
+
+  --md-sys-color-outline: #79747e;
+
+  /* App Background */
+  --ion-background-color: var(--md-sys-color-surface);
+  --ion-text-color: var(--md-sys-color-on-surface);
+
+  /* MD3 Elevation & Shapes */
+  --md-sys-shape-corner-small: 8px;
+  --md-sys-shape-corner-medium: 12px;
+  --md-sys-shape-corner-large: 16px;
+  --md-sys-shape-corner-extra-large: 28px;
+}
+
+/* Dark Scheme (Simplified MD3 Dark) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --md-ref-palette-primary80: #d0bcff;
+    --md-ref-palette-secondary80: #ccc2dc;
+    --md-ref-palette-tertiary80: #efb8c8;
+    --md-ref-palette-error80: #f2b8b5;
+
+    --md-ref-palette-neutral10: #1c1b1f;
+    /* Surface in light is dark in dark */
+    --md-ref-palette-neutral20: #313033;
+    --md-ref-palette-neutral30: #484649;
+
+    --ion-color-primary: var(--md-ref-palette-primary80);
+    --ion-color-primary-rgb: 208, 188, 255;
+    --ion-color-primary-contrast: #381e72;
+    --ion-color-primary-contrast-rgb: 56, 30, 114;
+
+    --ion-color-secondary: var(--md-ref-palette-secondary80);
+    --ion-color-secondary-rgb: 204, 194, 220;
+    --ion-color-secondary-contrast: #332d41;
+
+    --ion-color-tertiary: var(--md-ref-palette-tertiary80);
+    --ion-color-tertiary-contrast: #492532;
+
+    --md-sys-color-surface: #141218;
+    --md-sys-color-on-surface: #e6e1e5;
+    --md-sys-color-surface-container: #1d1b20;
+    /* Slightly lighter */
+
+    --md-sys-color-primary-container: #4f378b;
+    --md-sys-color-on-primary-container: #eaddff;
+
+    --md-sys-color-outline: #938f99;
+
+    --ion-background-color: var(--md-sys-color-surface);
+    --ion-text-color: var(--md-sys-color-on-surface);
+  }
+}

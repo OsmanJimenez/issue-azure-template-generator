@@ -1,37 +1,115 @@
 /*
  * App Global CSS
  * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
+ * Ionic Lab: https://ionicframework.com/docs/lab
  */
 
-/* Core CSS required for Ionic components to work properly */
-@import "@ionic/angular/css/core.css";
+@import 'theme/variables.scss';
 
-/* Basic CSS for apps built with Ionic */
-@import "@ionic/angular/css/normalize.css";
-@import "@ionic/angular/css/structure.css";
-@import "@ionic/angular/css/typography.css";
-@import "@ionic/angular/css/display.css";
+/* MD3 Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--ion-font-family);
+    font-weight: 500;
+    letter-spacing: normal;
+}
 
-/* Optional CSS utils that can be commented out */
-@import "@ionic/angular/css/padding.css";
-@import "@ionic/angular/css/float-elements.css";
-@import "@ionic/angular/css/text-alignment.css";
-@import "@ionic/angular/css/text-transformation.css";
-@import "@ionic/angular/css/flex-utils.css";
+/* MD3 Cards (Elevated is default) */
+ion-card {
+    background: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface);
+    box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+    border-radius: var(--md-sys-shape-corner-medium);
+    margin-inline: 16px;
+}
 
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
+ion-card-title {
+    color: var(--md-sys-color-on-surface);
+    font-size: 22px;
+    /* Headline Small */
+}
 
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+/* MD3 Inputs (Outlined) */
+ion-item.md3-input {
+    --background: transparent;
+    --border-color: var(--md-sys-color-outline);
+    --border-radius: 4px;
+    --border-width: 1px;
+    --border-style: solid;
+    margin-bottom: 16px;
+    border: 1px solid var(--md-sys-color-outline);
+    border-radius: 4px;
+}
+
+/* Native Ionic Inputs styling to match MD3 Outlined */
+ion-input,
+ion-textarea,
+ion-select {
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+    background: transparent;
+    border: 1px solid var(--md-sys-color-outline);
+    border-radius: 4px;
+    margin-bottom: 16px;
+    color: var(--md-sys-color-on-surface);
+}
+
+/* Helper to simulate MD3 label behavior (roughly) */
+ion-label[position="stacked"],
+ion-label[position="floating"] {
+    margin-bottom: 8px;
+    font-size: 12px;
+    /* Label Small */
+    font-weight: 500;
+    color: var(--ion-color-secondary);
+}
+
+/* MD3 Buttons */
+ion-button {
+    --border-radius: 20px;
+    /* Pillow shape for filled buttons */
+    font-weight: 500;
+    text-transform: none;
+    /* MD3 uses sentence case usually */
+    letter-spacing: 0.1px;
+}
+
+/* MD3 FAB */
+ion-fab-button {
+    --border-radius: var(--md-sys-shape-corner-extra-large);
+    /* 16px - 28px depending on size container */
+    --box-shadow: 0px 4px 8px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* MD3 Chips */
+ion-chip {
+    border-radius: 8px;
+    /* Assist Chip */
+    font-size: 14px;
+    /* Label Large */
+    font-weight: 500;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--md-sys-color-outline);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--ion-color-secondary);
+}

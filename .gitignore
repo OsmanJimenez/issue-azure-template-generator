@@ -1,70 +1,74 @@
 # Specifies intentionally untracked files to ignore when using Git
 # http://git-scm.com/docs/gitignore
 
-*~
-*.sw[mnpcod]
-.tmp
-*.tmp
-*.tmp.*
-UserInterfaceState.xcuserstate
-$RECYCLE.BIN/
-
-*.log
-log.txt
-
-
-/.sourcemaps
-/.versions
-/coverage
-
-# Ionic
-/.ionic
-/www
-/platforms
-/plugins
-
-# Compiled output
-/dist
-/tmp
-/out-tsc
-/bazel-out
-
-# Node
-/node_modules
-npm-debug.log
-yarn-error.log
-
-# IDEs and editors
-.idea/
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-project
-*.sublime-workspace
-
-# Visual Studio Code
+# --- IDEs and Editors ---
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-.history/*
+.history/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
+# --- Node ---
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
 
-# Miscellaneous
-/.angular
-/.angular/cache
-.sass-cache/
-/.nx
-/.nx/cache
-/connect.lock
+# --- Compiled Output ---
+/dist
+/www
+/out-tsc
+/bazel-out
+/.sourcemaps
+/.versions
+
+# --- Angular ---
+.angular/
+.nx/
+
+# --- Ionic ---
+.ionic/
+/platforms
+/plugins
+
+# --- Testing ---
 /coverage
-/libpeerconnection.log
 testem.log
 /typings
 
-# System files
+# --- Firebase ---
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+firestore-debug.log
+pubsub-debug.log
+ui-debug.log
+
+# --- Environmental / Secrets ---
+.env
+.env.*
+!.env.example
+mockServiceWorker.js
+
+# --- System Files ---
 .DS_Store
 Thumbs.db
+$RECYCLE.BIN/
+ehthumbs.db
+Desktop.ini
+
+# --- Miscellaneous ---
+*~
+*.tmp
+*.bak
+*.swp
+*.log
+build_log.txt
